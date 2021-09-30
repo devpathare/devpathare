@@ -1,0 +1,13 @@
+steps:
+# Build the container image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/devproject-324515/gcp-api@sha256:59c5004bcbf50ec7931c823c79e830c0148384f25c69630532f0d758d9f1ff39', '.']
+# Push the container image to Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/devproject-324515/gcp-api@sha256:59c5004bcbf50ec7931c823c79e830c0148384f25c69630532f0d758d9f1ff39']
+# Deploy container image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args: ['run', 'deploy', 'my-cb-service2', '--image', 'gcr.io/devproject-324515/gcp-api@sha256:59c5004bcbf50ec7931c823c79e830c0148384f25c69630532f0d758d9f1ff39', '--region', 'us-central1']
+images:
+- gcr.io/devproject-324515/gcp-api@sha256:59c5004bcbf50ec7931c823c79e830c0148384f25c69630532f0d758d9f1ff39
